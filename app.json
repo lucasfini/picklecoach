@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "PickleCoach",
+    "slug": "picklecoach",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "picklecoach",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lucasfini.picklecoach"
+    },
+    "android": {
+      "package": "com.lucasfini.picklecoach"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
