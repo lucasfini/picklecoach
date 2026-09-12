@@ -1,8 +1,8 @@
 import { Tabs } from 'expo-router';
-import { Text } from 'react-native';
+import { ColorValue, Text } from 'react-native';
 import { colors } from '@/src/theme';
 
-const Icon = ({ value, color }: { value: string; color: string }) => (
+const Icon = ({ value, color }: { value: string; color: ColorValue }) => (
   <Text style={{ fontSize: 18, color }}>{value}</Text>
 );
 
