@@ -1,8 +1,15 @@
 # Validation Notes
 
-- GitHub repository structure verified after initial push.
-- Expo SDK 57 targets React Native 0.86 and React 19.2.x.
-- The current repository intentionally uses demo analysis results.
-- Dependency installation/typecheck should be run in the Codex/dev environment with Node 22.13+ using `npm install`, `npx expo install --fix`, and `npm run typecheck`.
+Validated on September 12, 2026 with Node 22.23.2:
 
-The local sandbox used to stage this repository could not complete `npm install` before its execution timeout, so do not treat the current push as CI-verified yet.
+- Expo SDK 57 dependencies are aligned with the SDK compatibility map.
+- React Native resolves to 0.86.3, Reanimated to 4.5.1, and Worklets to 0.10.1.
+- TypeScript passes with strict mode enabled.
+- Expo Doctor passes all 21 checks.
+- Production JavaScript exports succeed for iOS and web.
+- Expo config introspection includes the iOS camera and microphone usage descriptions plus Android camera and audio permissions.
+- The local development server resolves the recording and analysis routes.
+
+Physical-iPhone validation is still required for operating-system permission prompts, record/stop behavior, 30-second auto-stop, local playback, retake cleanup, and the Use Video handoff. Follow the checklist in `README.md`.
+
+`npm audit` reports 13 moderate transitive advisories in the Expo toolchain. Its proposed automatic fixes would downgrade Expo outside SDK 57 compatibility, so they were not applied.

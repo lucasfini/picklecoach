@@ -12,7 +12,7 @@ Current repository implements the navigation and UX using deterministic demo ana
 Goal: validate the flow before coupling product design to a computer-vision implementation.
 
 ## Phase 2: Capture
-Add `expo-camera` using the SDK-compatible version via `npx expo install expo-camera`.
+Implemented with SDK-compatible `expo-camera`, `expo-video`, and `expo-file-system` packages.
 
 Capture requirements:
 - landscape option for analysis clips
@@ -20,6 +20,20 @@ Capture requirements:
 - 5-repetition instruction
 - clip duration cap
 - client-side validation where possible
+
+The capture flow produces a local typed session before invoking analysis:
+
+```text
+Camera / Recording
+        ↓
+RecordedPracticeSession
+        ↓
+Analysis Service
+        ↓
+Analysis Result
+```
+
+`RecordedPracticeSession` carries the selected practice type, temporary local video URI, recording timestamp, duration, and capture metadata. Capture owns recording and retake cleanup; the analysis service owns interpretation. The current demo analysis adapter accepts the session but deliberately does not read the video or derive metrics from it.
 
 ## Phase 3: Pose pipeline
 Prototype two implementations and benchmark them on real pickleball footage:

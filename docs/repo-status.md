@@ -1,5 +1,5 @@
 # Repository Status
 
-Initial Expo/React Native prototype, Codex instructions, product spec, architecture notes, demo coaching flow, and the first implementation task are present on `main`.
+PickleCoach has a real local camera flow for Serve, Dink, and Drive using Expo Camera. Users can review setup guidance, recover from denied permissions, record up to 30 seconds, review or retake the clip, and hand a typed recorded session to the analysis boundary.
 
-The next development step is real local camera capture followed by pose-pipeline evaluation.
+Analysis remains fixed demo data and is labelled as not video-derived. The next development step is a Serve pose-estimation proof of concept using real clips from this capture flow.
