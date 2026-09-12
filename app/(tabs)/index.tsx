@@ -1,7 +1,8 @@
 import { Link } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Card } from '@/src/components/Card';
-import { ShotType, shots } from '@/src/data/mock';
+import { practices } from '@/src/data/practices';
+import { PracticeType } from '@/src/domain/practice';
 import { colors, radius } from '@/src/theme';
 
 export default function CoachScreen() {
@@ -29,8 +30,8 @@ export default function CoachScreen() {
         <Text style={styles.muted}>Pick one skill. Keep it focused.</Text>
       </View>
 
-      {(Object.keys(shots) as ShotType[]).map((key) => {
-        const shot = shots[key];
+      {(Object.keys(practices) as PracticeType[]).map((key) => {
+        const shot = practices[key];
         return (
           <Link key={key} href={{ pathname: '/record/[shot]', params: { shot: key } }} asChild>
             <Card style={styles.shotCard}>
