@@ -22,6 +22,8 @@ The command requests only the benchmark-summary JSON from PickleCoach's app cont
 
 A case is counted as **qualified** only after a clean full-overlay review on a physical iPhone and an outcome matching the controlled expectation. Use the tracking timeline, sampled-frame controls, and lowest-joint coverage panel to inspect gaps, multi-person frames, and limb placement instead of judging only the aggregate percentages. Per-joint coverage is a tracking diagnostic, never a technique score. Simulator runs, pending/flagged visual reviews, unexpected gates, and an S02 rerun that does not match S01's exact clip fingerprint and Vision revision remain visibly marked for review.
 
+Switching cases intentionally deletes the temporary recording and in-memory landmark frames. Returning to a case shows its latest saved aggregate evidence near the case selector; it cannot replay the discarded video.
+
 An aggregate `usable` result is insufficient when the overlay visibly swaps limbs, jumps between people, loses the lower body for a meaningful phase, or drifts away from the player.
 
 The privacy-safe physical-device checkpoints and their interpretation are recorded in [pose-benchmark-results.md](pose-benchmark-results.md). These are tracking results, not player scores.
@@ -35,9 +37,9 @@ The privacy-safe physical-device checkpoints and their interpretation are record
 | S03 | Serve | Left-handed, outdoor shade, full body | Usable candidate | Qualified |
 | S04 | Serve | Right-handed, bright indoor court | Usable candidate | Qualified |
 | S05 | Serve | Right-handed, low/uneven indoor light | Evidence decides | Pending |
-| S06 | Serve | Player deliberately too far from phone | Retake: subject too small | Pending |
-| S07 | Serve | Both feet deliberately cropped | Retake: body not fully visible | Pending |
-| S08 | Serve | Paddle arm deliberately exits frame | Retake: body not fully visible | Pending |
+| S06 | Serve | Player deliberately too far from phone | Retake: subject too small | Needs review after preview fix |
+| S07 | Serve | Both feet deliberately cropped | Retake: body not fully visible | Needs review after preview fix |
+| S08 | Serve | Paddle arm deliberately exits frame | Retake: body not fully visible | Needs review after preview fix |
 | S09 | Serve | Second player deliberately crosses the frame | Retake: multiple people | Pending |
 | S10 | Serve | Full body at alternate supported camera distance | Usable candidate | Pending |
 | D01 | Dink | Right-handed, outdoor, full body | Usable candidate | Pending |

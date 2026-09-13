@@ -16,6 +16,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PoseTrackingPreview } from '@/src/components/analysis/PoseTrackingPreview';
 import { PoseProcessingKeepAwake } from '@/src/components/analysis/PoseProcessingKeepAwake';
+import { BenchmarkCaseEvidence } from '@/src/components/analysis/BenchmarkCaseEvidence';
 import { BenchmarkCasePicker } from '@/src/components/analysis/BenchmarkCasePicker';
 import { BenchmarkProgress } from '@/src/components/analysis/BenchmarkProgress';
 import { BenchmarkVisualReview } from '@/src/components/analysis/BenchmarkVisualReview';
@@ -36,6 +37,7 @@ import {
   isPoseBenchmarkRunQualified,
   PoseBenchmarkRun,
   PoseBenchmarkVisualIssue,
+  shouldConfirmPoseBenchmarkClipDiscard,
   withBenchmarkVisualReview,
 } from '@/src/domain/poseBenchmark';
 import {
@@ -301,32 +303,52 @@ export default function PoseLabScreen() {
     return <Redirect href="/(tabs)/profile" />;
   }
 
+  const confirmPendingClipDiscard = (onDiscard: () => void) => {
+    if (!shouldConfirmPoseBenchmarkClipDiscard(currentRun, Boolean(asset))) {
+      onDiscard();
+      return;
+    }
+
+    Alert.alert(
+      'Review this run first?',
+      'Switching now deletes the temporary video, so this run cannot be visually approved later. Save “Looks clean” or flag an issue before leaving.',
+      [
+        { text: 'Keep reviewing', style: 'cancel' },
+        { text: 'Discard & switch', style: 'destructive', onPress: onDiscard },
+      ],
+    );
+  };
+
   const selectPractice = (type: PracticeType) => {
     if (isAnalyzing || type === practiceType) return;
-    const cases = getPoseBenchmarkCasesForPractice(type);
-    const nextCaseForPractice = cases.find(
-      (item) => assessPoseBenchmarkCase(item.id, runs).status !== 'qualified',
-    ) ?? cases[0];
-    setPracticeType(type);
-    setBenchmarkCaseId(nextCaseForPractice.id);
-    setAsset(null);
-    setClipFingerprint(null);
-    setOutcome(null);
-    setCurrentRun(null);
-    setPreviousRun(null);
+    confirmPendingClipDiscard(() => {
+      const cases = getPoseBenchmarkCasesForPractice(type);
+      const nextCaseForPractice = cases.find(
+        (item) => assessPoseBenchmarkCase(item.id, runs).status !== 'qualified',
+      ) ?? cases[0];
+      setPracticeType(type);
+      setBenchmarkCaseId(nextCaseForPractice.id);
+      setAsset(null);
+      setClipFingerprint(null);
+      setOutcome(null);
+      setCurrentRun(null);
+      setPreviousRun(null);
+    });
   };
 
   const selectBenchmarkCase = (caseId: PoseBenchmarkCaseId) => {
     if (isAnalyzing || caseId === benchmarkCaseId) return;
-    const preservesExactRerun = benchmarkCaseId === 'S01' && caseId === 'S02';
-    setBenchmarkCaseId(caseId);
-    if (!preservesExactRerun) {
-      setAsset(null);
-      setClipFingerprint(null);
-    }
-    setOutcome(null);
-    setCurrentRun(null);
-    setPreviousRun(null);
+    confirmPendingClipDiscard(() => {
+      const preservesExactRerun = benchmarkCaseId === 'S01' && caseId === 'S02';
+      setBenchmarkCaseId(caseId);
+      if (!preservesExactRerun) {
+        setAsset(null);
+        setClipFingerprint(null);
+      }
+      setOutcome(null);
+      setCurrentRun(null);
+      setPreviousRun(null);
+    });
   };
 
   const continueBenchmark = () => {
@@ -530,6 +552,10 @@ export default function PoseLabScreen() {
           onSelect={selectBenchmarkCase}
         />
 
+        {!outcome && !isAnalyzing ? (
+          <BenchmarkCaseEvidence caseId={benchmarkCaseId} runs={runs} />
+        ) : null}
+
         <Card style={styles.importCard}>
           <View style={styles.importIcon}>
             <AppIcon color={colors.primary} name={asset ? 'film-outline' : 'camera-outline'} size={30} />
@@ -539,7 +565,7 @@ export default function PoseLabScreen() {
             <Text style={styles.importBody}>
               {asset
                 ? assetDetails
-                : 'The guided camera returns here and starts landmark tracking automatically. The video stays local.'}
+                : 'The guided camera returns here and starts landmark tracking automatically. Switching cases removes the video while keeping its aggregate stats.'}
             </Text>
           </View>
           <Button

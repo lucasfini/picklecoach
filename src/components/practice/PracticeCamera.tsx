@@ -20,6 +20,7 @@ import {
   MAX_RECORDING_FILE_SIZE_BYTES,
   MIN_RECORDING_DURATION_SECONDS,
   RECORDING_COUNTDOWN_SECONDS,
+  RECORDING_VIDEO_ASPECT_RATIO,
   RECORDING_VIDEO_QUALITY,
 } from '@/src/domain/recordedPracticeSession';
 import { adoptLocalRecording, deleteLocalRecording } from '@/src/services/localRecordingFiles';
@@ -292,17 +293,21 @@ export function PracticeCamera({
 
   return (
     <View style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        active
-        facing="back"
-        mode="video"
-        mute
-        style={StyleSheet.absoluteFill}
-        videoQuality={RECORDING_VIDEO_QUALITY}
-        onCameraReady={() => setIsReady(true)}
-        onMountError={({ message }) => onUnavailable(message)}
-      />
+      <View style={styles.cameraStage}>
+        <View style={styles.cameraFrame}>
+          <CameraView
+            ref={cameraRef}
+            active
+            facing="back"
+            mode="video"
+            mute
+            style={StyleSheet.absoluteFill}
+            videoQuality={RECORDING_VIDEO_QUALITY}
+            onCameraReady={() => setIsReady(true)}
+            onMountError={({ message }) => onUnavailable(message)}
+          />
+        </View>
+      </View>
 
       <SafeAreaView style={styles.overlay}>
         <View style={styles.topBar}>
@@ -385,6 +390,17 @@ export function PracticeCamera({
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#070A08' },
+  cameraStage: {
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cameraFrame: {
+    width: '100%',
+    aspectRatio: RECORDING_VIDEO_ASPECT_RATIO,
+    overflow: 'hidden',
+    backgroundColor: '#000000',
+  },
   overlay: { flex: 1, justifyContent: 'space-between' },
   topBar: {
     minHeight: 56,

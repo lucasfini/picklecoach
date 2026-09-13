@@ -6,10 +6,12 @@ import {
   compareBenchmarkRuns,
   createClipFingerprint,
   createRecordedSessionClipFingerprint,
+  getLatestPoseBenchmarkRunForCase,
   getNextUnqualifiedPoseBenchmarkCase,
   getPoseBenchmarkCoverage,
   isPoseBenchmarkRun,
   isPoseBenchmarkRunQualified,
+  shouldConfirmPoseBenchmarkClipDiscard,
   toPoseBenchmarkRouteParams,
   withBenchmarkVisualReview,
 } from '../src/domain/poseBenchmark.ts';
@@ -283,6 +285,45 @@ test('requires the current run itself to qualify before offering an exact-source
     isPoseBenchmarkRunQualified(wrongSourceS02, [qualifiedS01, wrongSourceS02]),
     false,
   );
+});
+
+test('finds the latest saved evidence for a revisited benchmark case', () => {
+  const olderS06 = benchmarkRun({
+    id: 'older-s06',
+    benchmarkCaseId: 'S06',
+    expectedGate: 'retake',
+    status: 'retake',
+    analyzedAt: '2026-09-13T10:00:00Z',
+  });
+  const latestS06 = {
+    ...olderS06,
+    id: 'latest-s06',
+    analyzedAt: '2026-09-13T12:00:00Z',
+  };
+  const laterOtherCase = benchmarkRun({
+    id: 'later-s07',
+    benchmarkCaseId: 'S07',
+    expectedGate: 'retake',
+    status: 'retake',
+    analyzedAt: '2026-09-13T13:00:00Z',
+  });
+
+  assert.equal(
+    getLatestPoseBenchmarkRunForCase('S06', [olderS06, laterOtherCase, latestS06])?.id,
+    'latest-s06',
+  );
+  assert.equal(getLatestPoseBenchmarkRunForCase('S05', [latestS06, laterOtherCase]), null);
+});
+
+test('warns before a pending visual review loses its temporary clip', () => {
+  const pendingRun = benchmarkRun({ visualReview: 'pending' });
+  assert.equal(shouldConfirmPoseBenchmarkClipDiscard(pendingRun, true), true);
+  assert.equal(shouldConfirmPoseBenchmarkClipDiscard(pendingRun, false), false);
+  assert.equal(
+    shouldConfirmPoseBenchmarkClipDiscard({ ...pendingRun, visualReview: 'clean' }, true),
+    false,
+  );
+  assert.equal(shouldConfirmPoseBenchmarkClipDiscard(null, true), false);
 });
 
 test('compares repeat runs without turning deltas into coaching claims', () => {

@@ -5,13 +5,13 @@ Validated on September 13, 2026 with Node 22.23.2.
 ## Automated and build validation
 
 - `npm run typecheck` passes in strict mode.
-- `npm test` passes 36 tests covering the pose contract, contradictory quality claims, processing/framing retakes, malformed and bounded native data, timestamp synchronization, per-joint tracking coverage, the bounded extraction deadline, internal-build Pose Lab access, compact benchmark persistence and visual-review provenance, evidence-qualified physical-device coverage, current-run continuation gates, privacy-safe benchmark reporting and cable collection, opaque clip fingerprints, exact-source rerun integrity, goal-aware practice rotation and local week boundaries, minimum capture duration, privacy-safe navigation, per-skill demo fixtures, bounded/deduplicated local profile and activity data, WCAG AA theme contrast, silent-capture/native-target configuration, Expo Router decoder compatibility, and linear-time handling of long malformed URL input.
+- `npm test` passes 39 tests covering the pose contract, contradictory quality claims, processing/framing retakes, malformed and bounded native data, timestamp synchronization, per-joint tracking coverage, the bounded extraction deadline, internal-build Pose Lab access, compact benchmark persistence and visual-review provenance, evidence-qualified physical-device coverage, current-run continuation gates, latest per-case evidence selection, pending-review clip-discard protection, privacy-safe benchmark reporting and cable collection, opaque clip fingerprints, exact-source rerun integrity, portrait recording geometry, goal-aware practice rotation and local week boundaries, minimum capture duration, privacy-safe navigation, per-skill demo fixtures, bounded/deduplicated local profile and activity data, WCAG AA theme contrast, silent-capture/native-target configuration, Expo Router decoder compatibility, and linear-time handling of long malformed URL input.
 - Expo Doctor passes all 21 checks.
 - Expo SDK dependency validation reports compatible packages.
 - Production JavaScript exports succeed for iOS and web.
 - An iOS release export with the explicit internal Pose Lab and autostart flags also succeeds; ordinary release exports keep that tool inaccessible.
 - The complete internal Release workspace also compiles, links, validates, and embeds `main.jsbundle` for a generic physical iPhone with signing disabled. The same headless environment cannot authorize the login-keychain private key, so Xcode must perform the final signed install.
-- The checked-in GitHub Actions workflow runs the locked install, rejects high/critical dependency advisories, checks strict TypeScript, runs all 36 tests and Expo Doctor, verifies the generated iOS contract, and builds both release exports for pull requests and pushes to `main`.
+- The checked-in GitHub Actions workflow runs the locked install, rejects high/critical dependency advisories, checks strict TypeScript, runs all 39 tests and Expo Doctor, verifies the generated iOS contract, and builds both release exports for pull requests and pushes to `main`.
 - The local Swift `PickleCoachPose` scheme builds for the iOS simulator SDK.
 - The complete `PickleCoach` workspace builds and links the local pose module for the iOS simulator SDK.
 - Expo configuration contains camera/photo descriptions, explicitly removes iOS microphone usage and Android audio-recording permission, and includes Expo Video, Expo Image Picker, Expo Font, the opaque 1024 px app icon, adaptive Android artwork, and the native splash-screen plugin.
@@ -55,6 +55,10 @@ The qualified S01→S02 pair preserved the same source fingerprint, Vision revis
 - Verify good clips pass and intentional framing failures return the correct retake state.
 - Check left/right-handed players, indoor/outdoor lighting, clothing variation, and the oldest supported iPhone.
 - Confirm repeat runs make stable quality decisions.
+
+Continued physical testing exposed that the full-screen iOS aspect-fill camera preview cropped the sides of the 9:16 recording later shown with contained playback. Capture now contains the native preview inside the complete recorded bounds and letterboxes the unused portion of taller displays. This correction passes TypeScript, domain tests, and the iOS bundle build; its preview/playback match still requires a physical-device visual confirmation before collecting more framing-sensitive cases.
+
+Five S06–S08 attempts made before that correction remain aggregate-only, pending-review diagnostics. Their raw clips had already been deleted during case switches, so none is counted as qualified evidence and all three conditions require a new post-fix recording. The same testing led to a per-case saved-summary view and an explicit confirmation before switching away from a pending visual review.
 
 Use the collection matrix and evidence rules in `docs/pose-benchmark.md`; do not begin Serve scoring until its exit criteria are met.
 

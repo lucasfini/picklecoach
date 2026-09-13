@@ -40,10 +40,14 @@
 - Cable-based, schema-validated benchmark report collection with no raw-video access
 - Current-run qualification before exact-source benchmark continuation
 - Clean, qualified S01→S02 exact-source physical-device pair
+- Full-frame 9:16 camera preview aligned with recorded playback
+- Per-case saved evidence summaries without retaining raw recordings
+- Pending-review warning before a benchmark case switch deletes its clip
 
 ## Now
 
 - Collect and review the remaining controlled Serve cases S05–S10
+- Redo S06–S08 after physically confirming the corrected full-frame preview
 - Expand overlay-quality and repeatability evidence beyond the first four conditions
 - Tune sampling and retake thresholds from benchmark evidence
 - Populate the regression manifest in `docs/pose-benchmark.md`

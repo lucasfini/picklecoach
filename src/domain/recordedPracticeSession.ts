@@ -5,6 +5,7 @@ export const MAX_RECORDING_FILE_SIZE_BYTES = 75 * 1024 * 1024;
 export const MIN_RECORDING_DURATION_SECONDS = 5;
 export const RECORDING_COUNTDOWN_SECONDS = 5;
 export const RECORDING_VIDEO_QUALITY = '720p' as const;
+export const RECORDING_VIDEO_ASPECT_RATIO = 9 / 16;
 
 export type PracticeCaptureMetadata = {
   audioCaptured: false;

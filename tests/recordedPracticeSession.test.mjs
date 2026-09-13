@@ -7,6 +7,7 @@ import {
   MAX_RECORDING_FILE_SIZE_BYTES,
   MIN_RECORDING_DURATION_SECONDS,
   RECORDING_COUNTDOWN_SECONDS,
+  RECORDING_VIDEO_ASPECT_RATIO,
   RECORDING_VIDEO_QUALITY,
   toAnalysisRouteParams,
 } from '../src/domain/recordedPracticeSession.ts';
@@ -34,6 +35,11 @@ test('requires enough captured motion before analysis', () => {
   assert.equal(isRecordingDurationLongEnough(4.99), false);
   assert.equal(isRecordingDurationLongEnough(5), true);
   assert.equal(isRecordingDurationLongEnough(Number.NaN), false);
+});
+
+test('defines the contained portrait frame used by capture and playback', () => {
+  assert.equal(RECORDING_VIDEO_QUALITY, '720p');
+  assert.equal(RECORDING_VIDEO_ASPECT_RATIO, 9 / 16);
 });
 
 test('keeps raw video details out of analysis navigation state', () => {

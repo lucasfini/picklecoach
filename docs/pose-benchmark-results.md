@@ -30,3 +30,13 @@ Apple Vision is producing fast, inspectable skeletons on real Serve motion, and 
 ### Workflow finding
 
 The lab originally offered continuation when any historical run had qualified the displayed case. That could label a newly recorded, still-pending S01 as S02. Continuation now requires the specific current run to be physical, clean, expectation-matching, and—where relevant—linked to its exact baseline.
+
+## September 13, 2026 — Unreviewed S06–S08 attempts
+
+Five additional physical runs were captured while investigating later Serve cases. They brought the local log to 16 runs, but none of the five received a visual review before its temporary clip was deleted during a case switch. S06, S07, and S08 therefore remain unqualified regardless of their aggregate gate.
+
+- S06 produced the expected retake gate once, with 100% body-frame coverage and 94% aggregate key-joint coverage. Subject size is the likely failing input, but the missing visual review prevents qualification.
+- S07 produced two usable gates and one expected retake gate. The retake run had 36% key-joint coverage and no ankle coverage, but it cannot be accepted without reviewing the overlay.
+- S08 produced a usable gate despite the intended paddle arm leaving the frame. That may reveal a missing per-joint guard, but the misleading cropped camera preview and missing visual review make this run unsuitable for threshold changes.
+
+These attempts are retained only as aggregate diagnostics. S06–S08 must be recorded and reviewed again after the full-frame camera preview is verified. The lab now shows each case’s saved stats and warns before a pending review loses its temporary clip.

@@ -390,6 +390,27 @@ export function getNextUnqualifiedPoseBenchmarkCase(
     : null;
 }
 
+export function getLatestPoseBenchmarkRunForCase(
+  caseId: PoseBenchmarkCaseId,
+  runs: PoseBenchmarkRun[],
+) {
+  let latestRun: PoseBenchmarkRun | null = null;
+  for (const run of runs) {
+    if (run.benchmarkCaseId !== caseId) continue;
+    if (!latestRun || Date.parse(run.analyzedAt) > Date.parse(latestRun.analyzedAt)) {
+      latestRun = run;
+    }
+  }
+  return latestRun;
+}
+
+export function shouldConfirmPoseBenchmarkClipDiscard(
+  run: PoseBenchmarkRun | null,
+  hasClip: boolean,
+) {
+  return hasClip && run?.visualReview === 'pending';
+}
+
 export function buildPoseBenchmarkReport(
   runs: PoseBenchmarkRun[],
   generatedAt: Date = new Date(),
