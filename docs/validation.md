@@ -47,11 +47,10 @@ This proves native autolinking, video decoding, JS/native contract handling, the
 
 ## Physical-device pose evidence
 
-Ten runs across the first four Serve cases completed on an iPhone 14 running iOS 26.6.2. Six physical runs received clean full-overlay reviews, no run was visually flagged, and S01, S03, and S04 qualified. Clean reviewed runs reported 80–100% body coverage, 70–94% key-joint coverage, and 798–1,562 ms processing time. The exact aggregate checkpoint is preserved in `docs/pose-benchmark-results.md`.
+Eleven runs across the first four Serve cases completed on an iPhone 14 running iOS 26.6.2. Seven physical runs received clean full-overlay reviews, no run was visually flagged, and S01–S04 all qualified. Clean reviewed runs reported 80–100% body coverage, 70–94% key-joint coverage, and 798–1,562 ms processing time. The exact aggregate checkpoint is preserved in `docs/pose-benchmark-results.md`.
 
-S02 remains unqualified because the matching S01 source was still pending visual review. Testing exposed and fixed a workflow flaw that had allowed historical case qualification to unlock continuation for a different current run. Before any technique measurement work:
+The qualified S01→S02 pair preserved the same source fingerprint, Vision revision, usable decision, 100% body coverage, 94% key-joint coverage, and 73% average confidence. Testing first exposed and fixed a workflow flaw that had allowed historical case qualification to unlock continuation for a different current run; the corrected flow then produced the qualified pair. Before any technique measurement work:
 
-- Complete a correctly reviewed S01→S02 exact-source pair.
 - Run the synchronized skeleton overlay on the remaining controlled Serve cases.
 - Verify good clips pass and intentional framing failures return the correct retake state.
 - Check left/right-handed players, indoor/outdoor lighting, clothing variation, and the oldest supported iPhone.

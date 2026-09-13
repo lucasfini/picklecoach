@@ -31,7 +31,7 @@ The privacy-safe physical-device checkpoints and their interpretation are record
 | ID | Skill | Controlled condition | Expected gate | Status |
 | --- | --- | --- | --- | --- |
 | S01 | Serve | Right-handed, outdoor shade, full body, rear 45° | Usable candidate | Qualified |
-| S02 | Serve | Exact S01 source rerun | Same as S01 | Needs review |
+| S02 | Serve | Exact S01 source rerun | Same as S01 | Qualified |
 | S03 | Serve | Left-handed, outdoor shade, full body | Usable candidate | Qualified |
 | S04 | Serve | Right-handed, bright indoor court | Usable candidate | Qualified |
 | S05 | Serve | Right-handed, low/uneven indoor light | Evidence decides | Pending |

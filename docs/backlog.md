@@ -39,10 +39,10 @@
 - Explicit internal-release Pose Lab gate that remains closed in ordinary production builds
 - Cable-based, schema-validated benchmark report collection with no raw-video access
 - Current-run qualification before exact-source benchmark continuation
+- Clean, qualified S01→S02 exact-source physical-device pair
 
 ## Now
 
-- Complete the correctly reviewed S01→S02 exact-source pair
 - Collect and review the remaining controlled Serve cases S05–S10
 - Expand overlay-quality and repeatability evidence beyond the first four conditions
 - Tune sampling and retake thresholds from benchmark evidence
