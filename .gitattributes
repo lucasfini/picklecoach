@@ -1,0 +1,3 @@
+# Patch-package files encode unified diffs. Their leading context marker plus
+# upstream indentation is patch syntax, not whitespace in the installed file.
+patches/*.patch whitespace=-blank-at-eol,-space-before-tab

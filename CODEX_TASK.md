@@ -1,4 +1,4 @@
-# First Codex Task — Real Practice Capture
+# First Codex Task — Real Practice Capture (Archived)
 
 ## Status
 
@@ -9,7 +9,7 @@ Complete.
 - Expo SDK 57 dependencies validated and pinned to compatible versions.
 - Real rear-camera video recording for Serve, Dink, and Drive.
 - Practice-specific setup instructions and full-body framing guidance.
-- Camera and microphone permission handling for loading, granted, denied, retry, and Settings recovery states.
+- Camera-only permission handling for loading, granted, denied, retry, and Settings recovery states; capture is deliberately silent.
 - Recording indicator, elapsed time, manual stop, cancellation, and automatic 30-second stop.
 - Local video review with Retake and Use Video actions.
 - Immediate cleanup of canceled and retaken recordings.
@@ -25,14 +25,14 @@ Complete.
 - `npx expo-doctor`
 - iOS production bundle export
 - Web production bundle export
-- Expo config introspection for iOS camera/microphone usage descriptions and Android camera/audio permissions
+- Expo config introspection for required camera/photo usage descriptions and the deliberate absence of microphone/audio-recording permissions
 
-Real camera hardware, operating-system permission prompts, recording playback, and file cleanup still require the physical-device checklist in `README.md` before merge.
+The core camera/review handoff was exercised on a physical iPhone before this milestone merged. Keep the broader checklist in `README.md` as regression coverage.
 
 ## What remains mocked
 
-All technique scores, detected opportunities, progress comparisons, and drill selection are fixed demo content. No biomechanical value is calculated from the recording, and no LLM or computer-vision service is used.
+All technique scores, detected opportunities, progress comparisons, and drill selection remain fixed demo content. A later milestone added real Apple Vision body landmarks and a skeleton preview, but it still calculates no biomechanical or coaching value.
 
 ## Next recommended milestone
 
-**Serve pose-estimation proof of concept using a real recorded video.**
+The pose-estimation proof of concept now compiles. The active milestone is **pose-quality benchmarking on 10–20 controlled clips** before any measured scoring.

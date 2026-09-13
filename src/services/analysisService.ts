@@ -1,7 +1,7 @@
-import { DEMO_ANALYSIS_RESULT } from '@/src/data/demoAnalysis';
+import { DemoAnalysisContent, DEMO_ANALYSIS_RESULTS } from '@/src/data/demoAnalysis';
 import { RecordedPracticeSession } from '@/src/domain/recordedPracticeSession';
 
-export type PracticeAnalysisResult = typeof DEMO_ANALYSIS_RESULT & {
+export type PracticeAnalysisResult = DemoAnalysisContent & {
   sessionId: string;
 };
 
@@ -14,7 +14,7 @@ export const demoAnalysisService: PracticeAnalysisService = {
     // This adapter deliberately does not read or interpret the video. Replace this
     // service boundary with measured pose analysis in the next milestone.
     return {
-      ...DEMO_ANALYSIS_RESULT,
+      ...DEMO_ANALYSIS_RESULTS[session.practiceType],
       sessionId: session.id,
     };
   },
