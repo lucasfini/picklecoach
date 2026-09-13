@@ -12,6 +12,14 @@ This is the evidence plan for deciding whether PickleCoach's Apple Vision skelet
 6. For S01, use the offered one-tap exact-source rerun to generate S02 and its repeatability comparison.
 7. Use the share button in Benchmark Coverage to export a privacy-safe text report. The report contains only opaque fingerprints and aggregate evidence; it cannot contain a video URI or landmark frames.
 
+When the iPhone is cabled to the development Mac, the same validated report can be collected without using the share sheet:
+
+```bash
+npm run benchmark:pull:ios -- --device "iPhone name or identifier"
+```
+
+The command requests only the benchmark-summary JSON from PickleCoach's app container, rejects malformed or over-broad records, prints the existing privacy-safe report, and deletes its temporary Mac copy. It never copies a recording, profile, or practice history.
+
 A case is counted as **qualified** only after a clean full-overlay review on a physical iPhone and an outcome matching the controlled expectation. Use the tracking timeline, sampled-frame controls, and lowest-joint coverage panel to inspect gaps, multi-person frames, and limb placement instead of judging only the aggregate percentages. Per-joint coverage is a tracking diagnostic, never a technique score. Simulator runs, pending/flagged visual reviews, unexpected gates, and an S02 rerun that does not match S01's exact clip fingerprint and Vision revision remain visibly marked for review.
 
 An aggregate `usable` result is insufficient when the overlay visibly swaps limbs, jumps between people, loses the lower body for a meaningful phase, or drifts away from the player.

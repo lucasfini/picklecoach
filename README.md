@@ -75,6 +75,8 @@ The repository path contains a space, which currently exposes [an upstream Expo 
 
 In a development build, open **You → Open pose benchmark lab** to choose a controlled case, import a clip, inspect the synchronized skeleton, save a one-tap visual review, and rerun the exact clip. The coverage card shares a privacy-safe aggregate report. For simulator screenshot automation, `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1 npm run start -- --dev-client` opens the lab directly. An embedded internal release may set both `EXPO_PUBLIC_POSE_LAB_ENABLED=1` and `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1`; an ordinary production release exposes neither. Simulator output is only a bridge/error-state smoke test; landmark quality must be judged on a physical iPhone.
 
+With the test iPhone connected, `npm run benchmark:pull:ios -- --device "iPhone name or identifier"` reads only the validated, privacy-safe benchmark summary from PickleCoach's container and removes its temporary Mac copy after printing the report.
+
 ## Device validation checklist
 
 For each of Serve, Dink, and Drive:

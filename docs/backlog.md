@@ -37,6 +37,7 @@
 - Retry-safe full local reset that preserves the routing profile until all other data clears
 - Bounded pose-processing deadline with a distinct recoverable failure state
 - Explicit internal-release Pose Lab gate that remains closed in ordinary production builds
+- Cable-based, schema-validated benchmark report collection with no raw-video access
 
 ## Now
 

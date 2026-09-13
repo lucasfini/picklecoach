@@ -5,13 +5,13 @@ Validated on September 13, 2026 with Node 22.23.2.
 ## Automated and build validation
 
 - `npm run typecheck` passes in strict mode.
-- `npm test` passes 32 tests covering the pose contract, contradictory quality claims, processing/framing retakes, malformed and bounded native data, timestamp synchronization, per-joint tracking coverage, the bounded extraction deadline, internal-build Pose Lab access, compact benchmark persistence and visual-review provenance, evidence-qualified physical-device coverage, privacy-safe benchmark reporting, opaque clip fingerprints, exact-source rerun integrity, goal-aware practice rotation and local week boundaries, minimum capture duration, privacy-safe navigation, per-skill demo fixtures, bounded/deduplicated local profile and activity data, WCAG AA theme contrast, silent-capture/native-target configuration, Expo Router decoder compatibility, and linear-time handling of long malformed URL input.
+- `npm test` passes 35 tests covering the pose contract, contradictory quality claims, processing/framing retakes, malformed and bounded native data, timestamp synchronization, per-joint tracking coverage, the bounded extraction deadline, internal-build Pose Lab access, compact benchmark persistence and visual-review provenance, evidence-qualified physical-device coverage, privacy-safe benchmark reporting and cable collection, opaque clip fingerprints, exact-source rerun integrity, goal-aware practice rotation and local week boundaries, minimum capture duration, privacy-safe navigation, per-skill demo fixtures, bounded/deduplicated local profile and activity data, WCAG AA theme contrast, silent-capture/native-target configuration, Expo Router decoder compatibility, and linear-time handling of long malformed URL input.
 - Expo Doctor passes all 21 checks.
 - Expo SDK dependency validation reports compatible packages.
 - Production JavaScript exports succeed for iOS and web.
 - An iOS release export with the explicit internal Pose Lab and autostart flags also succeeds; ordinary release exports keep that tool inaccessible.
 - The complete internal Release workspace also compiles, links, validates, and embeds `main.jsbundle` for a generic physical iPhone with signing disabled. The same headless environment cannot authorize the login-keychain private key, so Xcode must perform the final signed install.
-- The checked-in GitHub Actions workflow runs the locked install, rejects high/critical dependency advisories, checks strict TypeScript, runs all 32 tests and Expo Doctor, verifies the generated iOS contract, and builds both release exports for pull requests and pushes to `main`.
+- The checked-in GitHub Actions workflow runs the locked install, rejects high/critical dependency advisories, checks strict TypeScript, runs all 35 tests and Expo Doctor, verifies the generated iOS contract, and builds both release exports for pull requests and pushes to `main`.
 - The local Swift `PickleCoachPose` scheme builds for the iOS simulator SDK.
 - The complete `PickleCoach` workspace builds and links the local pose module for the iOS simulator SDK.
 - Expo configuration contains camera/photo descriptions, explicitly removes iOS microphone usage and Android audio-recording permission, and includes Expo Video, Expo Image Picker, Expo Font, the opaque 1024 px app icon, adaptive Android artwork, and the native splash-screen plugin.
@@ -36,6 +36,8 @@ The following screens were inspected on an iPhone simulator:
 The maximum-text pass found and corrected unbounded brand scaling, a non-scrolling welcome panel, a fixed onboarding footer that could overlap choices, and horizontal profile rows that could collide. Display type now has a deliberate upper scale while controls and explanatory content remain in scrollable layouts.
 
 Core camera capture, review, retake, and Use Video behavior was exercised on a physical iPhone before the capture PR merged.
+
+The internal Release build was installed on the connected iPhone 14 and confirmed as an active process. Its app container was listed over the CoreDevice cable service; before the first saved visual review, it correctly contained no benchmark-summary JSON. The cable collector reports that empty state without copying any other container content.
 
 ## Native smoke evidence
 

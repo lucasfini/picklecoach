@@ -12,6 +12,7 @@
     "android": "expo run:android",
     "web": "expo start --web",
     "audit:high": "npm audit --audit-level=high",
+    "benchmark:pull:ios": "node --import tsx scripts/pull-ios-pose-benchmark.mjs",
     "test": "node --import tsx --test tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "doctor": "expo-doctor",
