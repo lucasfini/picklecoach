@@ -24,14 +24,16 @@ A case is counted as **qualified** only after a clean full-overlay review on a p
 
 An aggregate `usable` result is insufficient when the overlay visibly swaps limbs, jumps between people, loses the lower body for a meaningful phase, or drifts away from the player.
 
+The privacy-safe physical-device checkpoints and their interpretation are recorded in [pose-benchmark-results.md](pose-benchmark-results.md). These are tracking results, not player scores.
+
 ## Planned 16-clip matrix
 
 | ID | Skill | Controlled condition | Expected gate | Status |
 | --- | --- | --- | --- | --- |
-| S01 | Serve | Right-handed, outdoor shade, full body, rear 45° | Usable candidate | Pending |
-| S02 | Serve | Exact S01 source rerun | Same as S01 | Pending |
-| S03 | Serve | Left-handed, outdoor shade, full body | Usable candidate | Pending |
-| S04 | Serve | Right-handed, bright indoor court | Usable candidate | Pending |
+| S01 | Serve | Right-handed, outdoor shade, full body, rear 45° | Usable candidate | Qualified |
+| S02 | Serve | Exact S01 source rerun | Same as S01 | Needs review |
+| S03 | Serve | Left-handed, outdoor shade, full body | Usable candidate | Qualified |
+| S04 | Serve | Right-handed, bright indoor court | Usable candidate | Qualified |
 | S05 | Serve | Right-handed, low/uneven indoor light | Evidence decides | Pending |
 | S06 | Serve | Player deliberately too far from phone | Retake: subject too small | Pending |
 | S07 | Serve | Both feet deliberately cropped | Retake: body not fully visible | Pending |

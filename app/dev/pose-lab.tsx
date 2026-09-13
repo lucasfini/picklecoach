@@ -33,6 +33,7 @@ import {
   createClipFingerprint,
   createRecordedSessionClipFingerprint,
   getNextUnqualifiedPoseBenchmarkCase,
+  isPoseBenchmarkRunQualified,
   PoseBenchmarkRun,
   PoseBenchmarkVisualIssue,
   withBenchmarkVisualReview,
@@ -176,17 +177,15 @@ export default function PoseLabScreen() {
     () => currentRun && previousRun ? compareBenchmarkRuns(currentRun, previousRun) : null,
     [currentRun, previousRun],
   );
-  const currentAssessment = useMemo(
-    () => currentRun?.benchmarkCaseId
-      ? assessPoseBenchmarkCase(currentRun.benchmarkCaseId, runs)
-      : null,
-    [currentRun?.benchmarkCaseId, runs],
+  const currentRunQualifies = useMemo(
+    () => currentRun ? isPoseBenchmarkRunQualified(currentRun, runs) : false,
+    [currentRun, runs],
   );
   const nextCase = useMemo(
-    () => currentAssessment?.status === 'qualified' && currentRun?.benchmarkCaseId
+    () => currentRunQualifies && currentRun?.benchmarkCaseId
       ? getNextUnqualifiedPoseBenchmarkCase(runs, currentRun.benchmarkCaseId)
       : null,
-    [currentAssessment?.status, currentRun?.benchmarkCaseId, runs],
+    [currentRunQualifies, currentRun?.benchmarkCaseId, runs],
   );
 
   const runAnalysis = useCallback(async (
@@ -662,7 +661,7 @@ export default function PoseLabScreen() {
               />
             ) : null}
 
-            {currentAssessment?.status === 'qualified' ? (
+            {currentRunQualifies ? (
               <Card style={styles.nextCaseCard}>
                 <View style={styles.nextCaseIcon}>
                   <AppIcon color={colors.primary} name="checkmark" size={22} />

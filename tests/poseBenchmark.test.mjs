@@ -9,6 +9,7 @@ import {
   getNextUnqualifiedPoseBenchmarkCase,
   getPoseBenchmarkCoverage,
   isPoseBenchmarkRun,
+  isPoseBenchmarkRunQualified,
   toPoseBenchmarkRouteParams,
   withBenchmarkVisualReview,
 } from '../src/domain/poseBenchmark.ts';
@@ -231,6 +232,57 @@ test('qualifies only clean physical evidence with the expected gate and exact re
   assert.equal(coverage.physicalRunCount, 2);
   assert.equal(coverage.visuallyReviewedPhysicalRunCount, 2);
   assert.equal(getNextUnqualifiedPoseBenchmarkCase([exactRerun, s01])?.id, 'S03');
+});
+
+test('requires the current run itself to qualify before offering an exact-source rerun', () => {
+  const device = {
+    modelName: 'iPhone 15 Pro',
+    osName: 'iOS',
+    osVersion: '26.0',
+    isPhysicalDevice: true,
+  };
+  const qualifiedS01 = benchmarkRun({
+    benchmarkCaseId: 'S01',
+    expectedGate: 'usable',
+    device,
+    visualReview: 'clean',
+    visualIssues: [],
+  });
+  const pendingCurrentS01 = {
+    ...qualifiedS01,
+    id: 'benchmark-current-s01',
+    clipFingerprint: 'clip-feedbeef',
+    visualReview: 'pending',
+  };
+
+  assert.equal(
+    assessPoseBenchmarkCase('S01', [pendingCurrentS01, qualifiedS01]).status,
+    'qualified',
+  );
+  assert.equal(
+    isPoseBenchmarkRunQualified(pendingCurrentS01, [pendingCurrentS01, qualifiedS01]),
+    false,
+  );
+  assert.equal(
+    isPoseBenchmarkRunQualified(qualifiedS01, [pendingCurrentS01, qualifiedS01]),
+    true,
+  );
+
+  const exactS02 = {
+    ...qualifiedS01,
+    id: 'benchmark-exact-s02',
+    benchmarkCaseId: 'S02',
+  };
+  const wrongSourceS02 = {
+    ...exactS02,
+    id: 'benchmark-wrong-s02',
+    clipFingerprint: pendingCurrentS01.clipFingerprint,
+  };
+  assert.equal(isPoseBenchmarkRunQualified(exactS02, [qualifiedS01, exactS02]), true);
+  assert.equal(
+    isPoseBenchmarkRunQualified(wrongSourceS02, [qualifiedS01, wrongSourceS02]),
+    false,
+  );
 });
 
 test('compares repeat runs without turning deltas into coaching claims', () => {

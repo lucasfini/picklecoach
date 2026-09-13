@@ -303,6 +303,19 @@ function hasMatchingServeBaseline(run: PoseBenchmarkRun, runs: PoseBenchmarkRun[
   ));
 }
 
+export function isPoseBenchmarkRunQualified(
+  run: PoseBenchmarkRun,
+  runs: PoseBenchmarkRun[],
+) {
+  return Boolean(
+    run.benchmarkCaseId &&
+    isPhysicalRun(run) &&
+    run.visualReview === 'clean' &&
+    hasExpectedGate(run) &&
+    hasMatchingServeBaseline(run, runs)
+  );
+}
+
 /**
  * A benchmark case counts only when a physical iPhone produced the expected
  * gate, a person watched the complete overlay and marked it clean, and the
@@ -318,11 +331,7 @@ export function assessPoseBenchmarkCase(
   }
 
   const physicalRuns = caseRuns.filter(isPhysicalRun);
-  const qualified = physicalRuns.some((run) => (
-    run.visualReview === 'clean' &&
-    hasExpectedGate(run) &&
-    hasMatchingServeBaseline(run, runs)
-  ));
+  const qualified = physicalRuns.some((run) => isPoseBenchmarkRunQualified(run, runs));
   if (qualified) {
     return { caseId, status: 'qualified', issues: [] };
   }
