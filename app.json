@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "scheme": "picklecoach",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.lucasfini.picklecoach"
@@ -14,7 +13,19 @@
     "android": {
       "package": "com.lucasfini.picklecoach"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow PickleCoach to use your camera to record practice videos.",
+          "microphonePermission": "Allow PickleCoach to use your microphone while recording practice videos.",
+          "recordAudioAndroid": true,
+          "barcodeScannerEnabled": false
+        }
+      ],
+      "expo-video"
+    ],
     "experiments": {
       "typedRoutes": true
     }

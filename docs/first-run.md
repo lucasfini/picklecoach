@@ -1,12 +1,19 @@
 # First Run
 
-Recommended first commands in the Codex/dev environment:
+Use Node 22.13 or newer, then run:
 
 ```bash
 npm install
-npx expo install --fix
+npx expo install --check
 npm run typecheck
 npm run start
 ```
 
-Then test the current prototype flow before replacing the recording placeholder.
+The web app can validate non-camera screens. SDK 57 camera testing on a physical iPhone requires a development build:
+
+```bash
+npx eas-cli@latest build --profile development --platform ios
+npm run start -- --dev-client
+```
+
+See `README.md` for the local Xcode option, the complete device checklist, and current platform limitations.
