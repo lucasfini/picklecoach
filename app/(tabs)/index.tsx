@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Card } from '@/src/components/Card';
+import { Card, PressableCard } from '@/src/components/Card';
 import { practices } from '@/src/data/practices';
 import { PracticeType } from '@/src/domain/practice';
 import { colors, radius } from '@/src/theme';
@@ -34,14 +34,14 @@ export default function CoachScreen() {
         const shot = practices[key];
         return (
           <Link key={key} href={{ pathname: '/record/[shot]', params: { shot: key } }} asChild>
-            <Card style={styles.shotCard}>
+            <PressableCard style={styles.shotCard}>
               <View style={styles.shotIcon}><Text style={styles.shotEmoji}>{shot.emoji}</Text></View>
               <View style={{ flex: 1, gap: 4 }}>
                 <Text style={styles.shotTitle}>{shot.title}</Text>
                 <Text style={styles.shotDescription}>{shot.description}</Text>
               </View>
               <Text style={styles.chevron}>›</Text>
-            </Card>
+            </PressableCard>
           </Link>
         );
       })}

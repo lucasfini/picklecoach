@@ -1,8 +1,4 @@
-import {
-  CameraView,
-  useCameraPermissions,
-  useMicrophonePermissions,
-} from 'expo-camera';
+import { useCameraPermissions, useMicrophonePermissions } from 'expo-camera';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -45,39 +41,13 @@ export default function RecordScreen() {
 
   const sessionRef = useRef<RecordedPracticeSession | null>(null);
   const didHandoffRef = useRef(false);
-  const isPreparingCameraRef = useRef(false);
   const isRequestingPermissionsRef = useRef(false);
   const isMountedRef = useRef(true);
 
-  const prepareCamera = useCallback(async () => {
-    if (isPreparingCameraRef.current) {
-      return;
-    }
-
-    isPreparingCameraRef.current = true;
+  const prepareCamera = useCallback(() => {
     setPhase('camera');
-    setCameraAvailability('checking');
+    setCameraAvailability('available');
     setCameraError(null);
-
-    try {
-      const isAvailable = await CameraView.isAvailableAsync();
-      if (!isMountedRef.current) {
-        return;
-      }
-
-      setCameraAvailability(isAvailable ? 'available' : 'unavailable');
-      if (!isAvailable) {
-        setCameraError('No available camera was found. Camera recording requires a physical device.');
-      }
-    } catch (error) {
-      console.warn('Camera availability check failed.', error);
-      if (isMountedRef.current) {
-        setCameraAvailability('unavailable');
-        setCameraError('The camera could not be opened. Close other camera apps and try again.');
-      }
-    } finally {
-      isPreparingCameraRef.current = false;
-    }
   }, []);
 
   const requestPermissions = useCallback(async () => {
