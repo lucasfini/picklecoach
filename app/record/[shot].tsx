@@ -8,6 +8,7 @@ import { CameraSetup } from '@/src/components/practice/CameraSetup';
 import { CameraUnavailable } from '@/src/components/practice/CameraUnavailable';
 import { PracticeCamera } from '@/src/components/practice/PracticeCamera';
 import { RecordingReview } from '@/src/components/practice/RecordingReview';
+import { isPoseLabEnabled } from '@/src/config/featureFlags';
 import { practices } from '@/src/data/practices';
 import { toPoseBenchmarkRouteParams } from '@/src/domain/poseBenchmark';
 import { getPoseBenchmarkCase, isPoseBenchmarkCaseId } from '@/src/domain/poseBenchmarkProtocol';
@@ -40,7 +41,7 @@ export default function RecordScreen() {
   const requestedBenchmarkCase = isPoseBenchmarkCaseId(benchmarkCaseIdParam)
     ? getPoseBenchmarkCase(benchmarkCaseIdParam)
     : null;
-  const benchmarkCase = __DEV__ && requestedBenchmarkCase?.practiceType === practiceType
+  const benchmarkCase = isPoseLabEnabled && requestedBenchmarkCase?.practiceType === practiceType
     ? requestedBenchmarkCase
     : null;
 

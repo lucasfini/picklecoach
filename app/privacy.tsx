@@ -5,6 +5,7 @@ import { Card } from '@/src/components/Card';
 import { AppIcon, AppIconName } from '@/src/components/ui/AppIcon';
 import { Button } from '@/src/components/ui/Button';
 import { Tag } from '@/src/components/ui/Tag';
+import { isPoseLabEnabled } from '@/src/config/featureFlags';
 import { usePlayerProfile } from '@/src/providers/PlayerProfileProvider';
 import { usePracticeActivity } from '@/src/providers/PracticeActivityProvider';
 import {
@@ -191,7 +192,7 @@ export default function PrivacyScreen() {
             icon="time-outline"
             label="Practice history"
           />
-          {__DEV__ ? (
+          {isPoseLabEnabled ? (
             <>
               <View style={styles.divider} />
               <InventoryRow

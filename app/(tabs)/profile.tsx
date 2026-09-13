@@ -5,6 +5,7 @@ import { BrandMark } from '@/src/components/BrandMark';
 import { Card } from '@/src/components/Card';
 import { AppIcon, AppIconName } from '@/src/components/ui/AppIcon';
 import { Tag } from '@/src/components/ui/Tag';
+import { isPoseLabEnabled } from '@/src/config/featureFlags';
 import { playerGoals, playerLevels } from '@/src/domain/playerProfile';
 import { usePlayerProfile } from '@/src/providers/PlayerProfileProvider';
 import { usePracticeActivity } from '@/src/providers/PracticeActivityProvider';
@@ -89,7 +90,7 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {__DEV__ ? (
+        {isPoseLabEnabled ? (
           <Pressable
             accessibilityRole="button"
             onPress={() => router.push('/dev/pose-lab')}

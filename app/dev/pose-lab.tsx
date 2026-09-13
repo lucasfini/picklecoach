@@ -23,6 +23,7 @@ import { Card } from '@/src/components/Card';
 import { AppIcon } from '@/src/components/ui/AppIcon';
 import { Button } from '@/src/components/ui/Button';
 import { Tag } from '@/src/components/ui/Tag';
+import { isPoseLabEnabled } from '@/src/config/featureFlags';
 import { practices } from '@/src/data/practices';
 import {
   assessPoseBenchmarkCase,
@@ -297,7 +298,7 @@ export default function PoseLabScreen() {
     runAnalysis,
   ]);
 
-  if (!__DEV__) {
+  if (!isPoseLabEnabled) {
     return <Redirect href="/(tabs)/profile" />;
   }
 

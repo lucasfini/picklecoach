@@ -73,7 +73,7 @@ Rebuild the native app after changing anything under `modules/`. Restarting Metr
 
 The repository path contains a space, which currently exposes [an upstream Expo iOS quoting bug](https://github.com/expo/expo/issues/48705) during clean native builds. Version-pinned compatibility patches and `plugins/withPathSafeIosBuildScripts.js` quote the dependency, metadata-search, and app build phases automatically after install/prebuild. Keep them until the fixes ship in the SDK 57 dependency line; they deliberately fail loudly if Expo changes the affected scripts.
 
-In a development build, open **You → Open pose benchmark lab** to choose a controlled case, import a clip, inspect the synchronized skeleton, save a one-tap visual review, and rerun the exact clip. The coverage card shares a privacy-safe aggregate report. For simulator screenshot automation, `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1 npm run start -- --dev-client` opens the lab directly. Simulator output is only a bridge/error-state smoke test; landmark quality must be judged on a physical iPhone.
+In a development build, open **You → Open pose benchmark lab** to choose a controlled case, import a clip, inspect the synchronized skeleton, save a one-tap visual review, and rerun the exact clip. The coverage card shares a privacy-safe aggregate report. For simulator screenshot automation, `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1 npm run start -- --dev-client` opens the lab directly. An embedded internal release may set both `EXPO_PUBLIC_POSE_LAB_ENABLED=1` and `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1`; an ordinary production release exposes neither. Simulator output is only a bridge/error-state smoke test; landmark quality must be judged on a physical iPhone.
 
 ## Device validation checklist
 

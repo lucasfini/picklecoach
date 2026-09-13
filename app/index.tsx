@@ -1,11 +1,11 @@
 import { Redirect } from 'expo-router';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { shouldAutostartPoseLab } from '@/src/config/featureFlags';
 import { usePlayerProfile } from '@/src/providers/PlayerProfileProvider';
 import { colors } from '@/src/theme';
 
 export default function Index() {
   const { isLoading, profile } = usePlayerProfile();
-  const shouldOpenPoseLab = __DEV__ && process.env.EXPO_PUBLIC_POSE_LAB_AUTOSTART === '1';
 
   if (isLoading) {
     return (
@@ -15,7 +15,7 @@ export default function Index() {
     );
   }
 
-  return <Redirect href={shouldOpenPoseLab ? '/dev/pose-lab' : profile ? '/(tabs)' : '/onboarding'} />;
+  return <Redirect href={shouldAutostartPoseLab ? '/dev/pose-lab' : profile ? '/(tabs)' : '/onboarding'} />;
 }
 
 const styles = StyleSheet.create({
