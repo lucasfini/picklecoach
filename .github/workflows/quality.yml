@@ -1,0 +1,56 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: TypeScript, tests, and release bundles
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: true
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Reject high or critical dependency advisories
+        run: npm run audit:high
+
+      - name: Check strict TypeScript
+        run: npm run typecheck
+
+      - name: Run domain and privacy tests
+        run: npm test
+
+      - name: Check Expo project health
+        run: npm run doctor
+
+      - name: Generate and verify native iOS configuration
+        run: npm run prebuild:ios:check
+
+      - name: Build iOS JavaScript bundle
+        run: npm run export:ios
+
+      - name: Build web bundle
+        run: npm run export:web

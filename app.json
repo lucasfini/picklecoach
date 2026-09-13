@@ -5,13 +5,24 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "scheme": "picklecoach",
+    "icon": "./assets/images/app-icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.lucasfini.picklecoach"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.lucasfini.picklecoach",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
-      "package": "com.lucasfini.picklecoach"
+      "package": "com.lucasfini.picklecoach",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/splash-mark.png",
+        "backgroundColor": "#0F3D2E"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/app-icon.png"
     },
     "plugins": [
       "expo-router",
@@ -19,12 +30,35 @@
         "expo-camera",
         {
           "cameraPermission": "Allow PickleCoach to use your camera to record practice videos.",
-          "microphonePermission": "Allow PickleCoach to use your microphone while recording practice videos.",
-          "recordAudioAndroid": true,
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
           "barcodeScannerEnabled": false
         }
       ],
-      "expo-video"
+      "expo-video",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow PickleCoach to choose practice videos for private on-device tracking.",
+          "cameraPermission": "Allow PickleCoach to use your camera to record practice videos.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0F3D2E",
+          "image": "./assets/images/splash-mark.png",
+          "imageWidth": 190,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#0F3D2E",
+            "image": "./assets/images/splash-mark.png"
+          }
+        }
+      ],
+      "./plugins/withPathSafeIosBuildScripts"
     ],
     "experiments": {
       "typedRoutes": true

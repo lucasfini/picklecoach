@@ -2,29 +2,39 @@
 
 **Get better at pickleball between lessons.**
 
-PickleCoach is an iOS-first React Native / Expo app for recreational pickleball players. It records short controlled practice clips, prepares them for analysis, gives the player one priority, and tracks progress over time.
+PickleCoach is an iOS-first Expo app for recreational pickleball players. It guides a player through a short, controlled practice recording, checks whether the body can be tracked, and will eventually turn measured movement into one useful coaching priority.
 
-## Status
+## Current product
 
-The app has a working local camera flow for Serve, Dink, and Drive:
+The local prototype now includes:
 
-1. Choose a practice type.
-2. Review phone-position guidance.
-3. Grant camera and microphone access.
-4. Record up to 30 seconds with the rear camera.
-5. Review, retake, or use the local video.
-6. Continue to an explicitly labelled demo analysis result.
+- A focused level-and-goals onboarding flow.
+- A photo-led Today screen for Serve, Dink, and Drive.
+- Per-skill phone placement and full-body framing guidance.
+- Camera permission recovery without requesting microphone access.
+- Silent 720p rear-camera recording with a five-second get-into-position countdown, manual stop, a 30-second cap, and a 75 MB safety limit.
+- Immediate cleanup and retry guidance for clips shorter than five seconds.
+- Local playback, retake, cancellation, and file cleanup.
+- On-device Apple Vision 2D body-landmark extraction on iPhone.
+- A synchronized skeleton overlay with tracking-quality statistics.
+- Retake states when the player is missing, too small, partially cropped, or inconsistently tracked.
+- Local practice history that records session metadata, not video or technique scores.
+- An ephemeral accepted-clip handoff that keeps raw-video URIs out of routes and local JSON.
+- A dedicated temporary-recording cache with crash-recovery cleanup and visible local-data controls.
+- VoiceOver semantics, WCAG AA small-text color pairs, and layouts hardened for Accessibility text sizes.
+- Branded recovery for invalid links, failed local saves, and unexpected screen errors.
+- A structured development-only 16-case pose benchmark with device provenance, visual review, repeatability, and privacy-safe report sharing.
 
-Pose estimation is not implemented. Current scores and coaching feedback are fixed demo data and are not derived from the recording.
+The pose proof of concept extracts landmarks only. It does **not** calculate technique metrics or scores yet. Every coaching score, explanation, and drill currently shown is fixed demo content and is visibly labelled **DEMO DATA · NOT VIDEO-DERIVED**. Serve, Dink, and Drive use different example copy, but none of it describes the recorded clip.
 
 ## Stack
 
-- Expo SDK 57
-- React Native 0.86
-- React 19.2
-- Expo Router
-- Expo Camera and Expo Video
-- TypeScript
+- Expo SDK 57 and Expo Router
+- React Native 0.86 and React 19.2
+- TypeScript in strict mode
+- Expo Camera, Video, Image Picker, File System, Device, and Font
+- A local Expo module written in Swift
+- Apple Vision `VNDetectHumanBodyPoseRequest`
 
 ## Run locally
 
@@ -33,58 +43,78 @@ Use Node 22.13 or newer.
 ```bash
 npm install
 npx expo install --check
+npm test
 npm run typecheck
+npm run doctor
 npm run start
 ```
 
-The web build is useful for checking non-camera screens, but camera recording should be tested on a physical device.
+The web build is useful for non-camera UI. Camera capture and the Apple Vision module require a development build on iPhone; Expo Go cannot load the local Swift module.
 
-## Physical iPhone testing
+Pull requests and pushes to `main` run the same locked install, high-severity dependency audit, strict TypeScript, tests, Expo Doctor, iOS prebuild contract, and release-bundle checks in GitHub Actions. The workflow validates the JavaScript/native configuration boundary; physical iPhone pose quality remains a separate evidence gate.
 
-A development build is required for the normal SDK 57 physical-iPhone workflow. The App Store version of Expo Go only supports through SDK 54, so it cannot open this project. The camera and video modules themselves are Expo-supported; the limitation is availability of a matching Expo Go binary on iPhone.
+## Physical iPhone build
 
-Build and install the existing EAS development profile:
+Build and install the EAS development profile:
 
 ```bash
 npx eas-cli@latest build --profile development --platform ios
 npm run start -- --dev-client
 ```
 
-For a local build with Xcode and a connected iPhone:
+Or use Xcode and a connected iPhone:
 
 ```bash
 npx expo run:ios --device
 npm run start -- --dev-client
 ```
 
-Then verify each practice type through both paths:
+Rebuild the native app after changing anything under `modules/`. Restarting Metro alone cannot add a new Swift module to an already installed binary.
 
-- Record, stop, review, retake, and record again.
-- Record, stop, review, use the video, and confirm the demo-analysis banner.
-- Let a recording reach 30 seconds and confirm it stops automatically.
-- Cancel once while idle and once while recording.
-- Deny camera or microphone access and verify retry or Settings recovery.
+The repository path contains a space, which currently exposes [an upstream Expo iOS quoting bug](https://github.com/expo/expo/issues/48705) during clean native builds. Version-pinned compatibility patches and `plugins/withPathSafeIosBuildScripts.js` quote the dependency, metadata-search, and app build phases automatically after install/prebuild. Keep them until the fixes ship in the SDK 57 dependency line; they deliberately fail loudly if Expo changes the affected scripts.
 
-iOS can retain a previous permission decision. Use Settings to toggle access, or uninstall and reinstall the development build when testing the first-request state.
+In a development build, open **You → Open pose benchmark lab** to choose a controlled case, import a clip, inspect the synchronized skeleton, save a one-tap visual review, and rerun the exact clip. The coverage card shares a privacy-safe aggregate report. For simulator screenshot automation, `EXPO_PUBLIC_POSE_LAB_AUTOSTART=1 npm run start -- --dev-client` opens the lab directly. Simulator output is only a bridge/error-state smoke test; landmark quality must be judged on a physical iPhone.
 
-## Recording lifecycle
+## Device validation checklist
 
-Recordings remain in the app's local cache. They are not uploaded. Retake and cancel attempt to delete the discarded file immediately, and the accepted clip is deleted when the analysis screen leaves the flow. The operating system may also purge cached files.
+For each of Serve, Dink, and Drive:
 
-The iOS experience is the current quality target. The implementation uses cross-platform Expo APIs and keeps Android permissions configured, but Android device-specific camera behavior has not been optimized in this milestone. Simulators cannot validate real camera capture.
+1. Follow the setup guide and open the camera.
+2. Tap record, confirm the five-second countdown gives time to move into frame, then record 5–10 seconds.
+3. Stop before five seconds once and confirm the temporary clip is discarded with retry guidance.
+4. Play the review, retake, record again, and use the second clip.
+5. Confirm the on-device processing state appears.
+6. With a well-framed full body, confirm the skeleton follows the video and inspect the tracking percentages.
+7. Confirm all coaching below the skeleton remains explicitly marked as demo data.
+8. Crop out the feet or move far away and confirm the app asks for a retake without creating a score.
+9. Let a recording reach 30 seconds and confirm auto-stop.
+10. Cancel during the countdown, while idle, and while recording.
+11. Deny camera access and verify retry or Settings recovery; confirm iOS never asks for microphone access.
+
+iOS retains prior permission decisions. Toggle access in Settings, or uninstall the development build when testing the first-request state.
+
+## Privacy and recording lifecycle
+
+Recordings are silent, move into a PickleCoach-owned cache directory, and are never uploaded. PickleCoach does not request microphone access because audio is unnecessary for pose tracking. Retake and cancel delete discarded files immediately when possible. An accepted clip is handed to analysis only in memory—its URI is never placed in router state or local JSON—and is deleted when the analysis flow is left. Pose Lab imports move only the picker’s temporary copy into the same boundary and never modify the original Photos asset. A fresh app launch purges the owned recording directory to remove clips abandoned by a crash or forced termination. Practice history stores only the skill, timestamp, duration, and the fact that analysis is still in demo mode.
+
+The current pose result is held in memory for the analysis screen and is not persisted. **You → Video handling** explains this lifecycle and provides separate temporary-clip, history, and full-reset controls. Future storage work should prefer derived features over raw video and must define cloud-specific consent and retention before accounts launch.
 
 ## Architecture
-
-The feature keeps capture independent from future computer vision:
 
 ```text
 Camera / Recording
         ↓
 RecordedPracticeSession
         ↓
-Analysis Service
+Ephemeral in-memory handoff
         ↓
-Analysis Result
+Apple Vision landmark extraction
+        ↓
+Validated pose contract + quality gate
+        ↓
+Skeleton preview or retake
+        ↓
+Demo coaching (still separate and labelled)
 ```
 
-See `docs/architecture.md` before implementing pose estimation or AI coaching. `AGENTS.md` contains the product and engineering rules for Codex.
+Read `docs/architecture.md` before changing pose or coaching behavior. `AGENTS.md` contains the product and engineering rules.

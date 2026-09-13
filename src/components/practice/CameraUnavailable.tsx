@@ -1,6 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, radius } from '@/src/theme';
+import { AppIcon } from '@/src/components/ui/AppIcon';
+import { Button } from '@/src/components/ui/Button';
+import { colors } from '@/src/theme';
 
 type CameraUnavailableProps = {
   isChecking: boolean;
@@ -12,54 +14,48 @@ type CameraUnavailableProps = {
 export function CameraUnavailable({ isChecking, detail, onRetry, onBack }: CameraUnavailableProps) {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.content}>
-        <Text style={styles.eyebrow}>{isChecking ? 'CHECKING CAMERA' : 'CAMERA UNAVAILABLE'}</Text>
-        <Text style={styles.title}>{isChecking ? 'Getting the camera ready…' : 'We cannot start the camera.'}</Text>
-        <Text style={styles.body}>
-          {isChecking
-            ? 'This should only take a moment.'
-            : detail ?? 'Try again on a physical device with an available rear camera.'}
-        </Text>
-        {!isChecking ? (
-          <Pressable
-            accessibilityRole="button"
-            onPress={onRetry}
-            style={({ pressed }) => [styles.primaryButton, pressed && styles.buttonPressed]}
-          >
-            <Text style={styles.primaryButtonText}>Try camera again</Text>
-          </Pressable>
-        ) : null}
-        <Pressable accessibilityRole="button" onPress={onBack} style={styles.secondaryButton}>
-          <Text style={styles.secondaryButtonText}>Back to setup</Text>
+      <View style={styles.topBar}>
+        <Pressable
+          accessibilityLabel="Back to camera setup"
+          accessibilityRole="button"
+          hitSlop={12}
+          onPress={onBack}
+          style={styles.backButton}
+        >
+          <AppIcon color={colors.text} name="chevron-back" size={22} />
         </Pressable>
       </View>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={[styles.iconWrap, !isChecking && styles.errorIconWrap]}>
+          {isChecking ? (
+            <ActivityIndicator color={colors.primary} size="large" />
+          ) : (
+            <AppIcon color={colors.coral} name="camera-outline" size={46} />
+          )}
+        </View>
+        <View style={styles.copy}>
+          <Text maxFontSizeMultiplier={1.5} style={styles.eyebrow}>{isChecking ? 'GETTING READY' : 'CAMERA UNAVAILABLE'}</Text>
+          <Text accessibilityRole="header" maxFontSizeMultiplier={1.6} style={styles.title}>{isChecking ? 'Warming up the camera…' : 'The camera needs another try.'}</Text>
+          <Text style={styles.body}>
+            {isChecking ? 'This should only take a moment.' : detail ?? 'Use a physical iPhone with an available rear camera.'}
+          </Text>
+        </View>
+        {!isChecking ? <Button icon="refresh" label="Try camera again" onPress={onRetry} /> : null}
+        <Button label="Back to setup" onPress={onBack} variant="ghost" />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: colors.background },
-  content: { flex: 1, justifyContent: 'center', padding: 28, gap: 16 },
-  eyebrow: { color: colors.primary, fontSize: 11, fontWeight: '900' },
-  title: { color: colors.text, fontSize: 28, lineHeight: 34, fontWeight: '900' },
-  body: { color: colors.muted, fontSize: 15, lineHeight: 22, marginBottom: 4 },
-  primaryButton: {
-    minHeight: 54,
-    borderRadius: radius.md,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  primaryButtonText: { color: '#FFFFFF', fontSize: 16, fontWeight: '900' },
-  secondaryButton: {
-    minHeight: 52,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButtonText: { color: colors.text, fontSize: 15, fontWeight: '800' },
-  buttonPressed: { opacity: 0.82 },
+  topBar: { minHeight: 54, justifyContent: 'center', paddingHorizontal: 18 },
+  backButton: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surface },
+  content: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingTop: 12, paddingBottom: 70, gap: 16 },
+  iconWrap: { alignSelf: 'center', width: 112, height: 112, borderRadius: 56, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primarySoft, marginBottom: 10 },
+  errorIconWrap: { backgroundColor: colors.coralSoft },
+  copy: { alignItems: 'center', gap: 8, marginBottom: 6 },
+  eyebrow: { color: colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
+  title: { color: colors.text, fontSize: 32, lineHeight: 38, fontWeight: '900', letterSpacing: -1, textAlign: 'center' },
+  body: { color: colors.muted, fontSize: 14, lineHeight: 21, textAlign: 'center' },
 });

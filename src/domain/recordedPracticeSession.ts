@@ -1,10 +1,18 @@
-import { isPracticeType, PracticeType } from '@/src/domain/practice';
+import { PracticeType } from '@/src/domain/practice';
 
 export const MAX_RECORDING_DURATION_SECONDS = 30;
+export const MAX_RECORDING_FILE_SIZE_BYTES = 75 * 1024 * 1024;
+export const MIN_RECORDING_DURATION_SECONDS = 5;
+export const RECORDING_COUNTDOWN_SECONDS = 5;
+export const RECORDING_VIDEO_QUALITY = '720p' as const;
 
 export type PracticeCaptureMetadata = {
+  audioCaptured: false;
   cameraFacing: 'back';
+  orientation: 'portrait';
+  maxFileSizeBytes: typeof MAX_RECORDING_FILE_SIZE_BYTES;
   maxDuration: number;
+  videoQuality: typeof RECORDING_VIDEO_QUALITY;
 };
 
 export type RecordedPracticeSession = {
@@ -15,18 +23,6 @@ export type RecordedPracticeSession = {
   duration: number;
   captureMetadata: PracticeCaptureMetadata;
 };
-
-type RecordedPracticeSessionParams = {
-  sessionId?: string | string[];
-  shot?: string | string[];
-  videoUri?: string | string[];
-  recordedAt?: string | string[];
-  duration?: string | string[];
-};
-
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
 
 export function createRecordedPracticeSession({
   practiceType,
@@ -42,8 +38,12 @@ export function createRecordedPracticeSession({
     recordedAt,
     duration: Math.min(MAX_RECORDING_DURATION_SECONDS, Math.max(0, duration)),
     captureMetadata: {
+      audioCaptured: false,
       cameraFacing: 'back',
+      orientation: 'portrait',
+      maxFileSizeBytes: MAX_RECORDING_FILE_SIZE_BYTES,
       maxDuration: MAX_RECORDING_DURATION_SECONDS,
+      videoQuality: RECORDING_VIDEO_QUALITY,
     },
   };
 }
@@ -52,45 +52,11 @@ export function toAnalysisRouteParams(session: RecordedPracticeSession) {
   return {
     sessionId: session.id,
     shot: session.practiceType,
-    videoUri: session.videoUri,
-    recordedAt: session.recordedAt,
-    duration: String(session.duration),
   };
 }
 
-export function recordedPracticeSessionFromParams(
-  params: RecordedPracticeSessionParams,
-): RecordedPracticeSession | null {
-  const id = firstParam(params.sessionId);
-  const practiceType = firstParam(params.shot);
-  const videoUri = firstParam(params.videoUri);
-  const recordedAt = firstParam(params.recordedAt);
-  const duration = Number(firstParam(params.duration));
-
-  if (
-    !id ||
-    !isPracticeType(practiceType) ||
-    !videoUri ||
-    !recordedAt ||
-    !Number.isFinite(Date.parse(recordedAt)) ||
-    !Number.isFinite(duration) ||
-    duration < 0 ||
-    duration > MAX_RECORDING_DURATION_SECONDS
-  ) {
-    return null;
-  }
-
-  return {
-    id,
-    practiceType,
-    videoUri,
-    recordedAt,
-    duration,
-    captureMetadata: {
-      cameraFacing: 'back',
-      maxDuration: MAX_RECORDING_DURATION_SECONDS,
-    },
-  };
+export function isRecordingDurationLongEnough(duration: number) {
+  return Number.isFinite(duration) && duration >= MIN_RECORDING_DURATION_SECONDS;
 }
 
 export function formatRecordingDuration(duration: number) {
